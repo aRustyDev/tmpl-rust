@@ -1,0 +1,15 @@
+name: "Housekeeping Workflow"
+
+on:
+  schedule:
+    - cron: "0 0 * * 7" # Every sunday at 00:00
+
+env:
+  IMAGE_NAME: user/app
+  DOCKERFILE: ./.config/Dockerfile
+
+jobs:
+  stale-food:
+    - name: Stale Branches
+      uses: crs-k/stale-branches@v7.0.0
+
