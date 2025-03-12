@@ -1,7 +1,9 @@
 name: "Git Workflow"
 
 on:
-  branch: doesnotexist
+  pull_request:
+    branches: 
+      - doesnotexist
 
 env:
   IMAGE_NAME: user/app
