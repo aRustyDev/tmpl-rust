@@ -159,6 +159,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Load secret
+        uses: 1password/load-secrets-action@v2
+        with:
+          # Export loaded secrets as environment variables
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          SNYK_TOKEN: op://${{ env.OPW_VAULT }}/snyk/key_name
+          GITGUARDIAN_API_KEY: op://${{ env.OPW_VAULT }}/gitguardian/key_name
+
       - uses: actions-rs/toolchain@v1
         name: install rust toolchain
         with:
@@ -168,3 +178,26 @@ jobs:
       - uses: actions-rs/audit-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: TruffleHog OSS
+        uses: trufflesecurity/trufflehog@v3.88.16
+
+      # - name: Snyk
+      #   uses: snyk/actions@0.4.0
+
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: OSSF Scorecard action
+      #   uses: ossf/scorecard-action@v2.4.1
+
+      # - name: Docker Scout
+      #   uses: docker/scout-action@v1.16.1
+
+      # - name: GitGuardian Shield Action
+      #   uses: GitGuardian/ggshield-action@v1.37.0
+      #   env:
+      #     GITHUB_PUSH_BEFORE_SHA: ${{ github.event.before }}
+      #     GITHUB_PUSH_BASE_SHA: ${{ github.event.base }}
+      #     GITHUB_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
