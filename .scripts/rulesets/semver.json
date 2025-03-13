@@ -1,0 +1,34 @@
+{
+  "id": 4117350,
+  "name": "semver",
+  "target": "tag",
+  "source_type": "Repository",
+  "source": "aRustyDev/rust-repo-template",
+  "enforcement": "disabled",
+  "conditions": {
+    "ref_name": {
+      "exclude": [],
+      "include": [
+        "refs/tags/v*"
+      ]
+    }
+  },
+  "rules": [
+    {
+      "type": "deletion"
+    },
+    {
+      "type": "non_fast_forward"
+    },
+    {
+      "type": "creation"
+    },
+    {
+      "type": "update"
+    },
+    {
+      "type": "required_signatures"
+    }
+  ],
+  "bypass_actors": []
+}
