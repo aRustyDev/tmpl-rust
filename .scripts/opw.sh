@@ -18,7 +18,7 @@ ORIGIN=$5
 
 # Setup 1Password Vault + Service Account
 op vault create $VAULT --description "Vault for $REPO; read-only access to secrets by GitHub Actions via $VAULT-GH-Actions"
-op service-account create "$VAULT-GH-Actions" --vault $VAULT:read_items
+gh secret set OP_SERVICE_ACCOUNT_TOKEN --body "$(op service-account create "$VAULT" --vault $VAULT:read_items --raw)"
 
 # Setup 1Password Secrets
 ## Create GitHub Token (for workflows)
