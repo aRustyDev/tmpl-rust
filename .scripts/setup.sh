@@ -27,6 +27,10 @@ sed -i -e 's/# name = "github"/name = "github"/g' ~/.config/1Password/ssh/agent.
 git setup github
 sed -i -e 's/name = "github"/# name = "github"/g' ~/.config/1Password/ssh/agent.toml
 
+# setup CODEOWNERS default
+GitUserName=$(git config user.name)
+sed -i -e 's/GitUserName/$GitUserName/g' $0/../.github/CODEOWNERS
+
 # install dependencies
 python -m pip install --upgrade pip
 pip install pre-commit
