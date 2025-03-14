@@ -133,10 +133,10 @@ jobs:
         with:
           cmd: yq -oy '.package.version' Cargo.toml
         
-      - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@v2
-        with:
-          subject-path: './target/release/${{ steps.appName.outputs.result }}'
+      # - name: Generate artifact attestation
+      #   uses: actions/attest-build-provenance@v2
+      #   with:
+      #     subject-path: './target/release/${{ steps.appName.outputs.result }}'
 
   docker:
     runs-on: ubuntu-latest
@@ -189,20 +189,20 @@ jobs:
           tags: ${{ needs.semver.outputs.current }}
           file: ${{ env.DOCKERFILE }} 
 
-      - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@v2
-        with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          subject-digest: ${{ steps.docker_build.outputs.digest }}
+      # - name: Generate artifact attestation
+      #   uses: actions/attest-build-provenance@v2
+      #   with:
+      #     subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      #     subject-digest: ${{ steps.docker_build.outputs.digest }}
 
       - name: Run cargo-sbom
         run: cargo-sbom --output-format=cyclone_dx_json_1_4 > .github/data/sbom.cyclonedx.json
 
-      - name: Generate SBOM attestation
-        uses: actions/attest-sbom@v1
-        with:
-          subject-path: './target/release/${{ env.BINARY_NAME }}'
-          sbom-path: '.github/data/sbom.cyclonedx.json'
+      # - name: Generate SBOM attestation
+      #   uses: actions/attest-sbom@v1
+      #   with:
+      #     subject-path: './target/release/${{ env.BINARY_NAME }}'
+      #     sbom-path: '.github/data/sbom.cyclonedx.json'
 
       - name: Test
         run: |
