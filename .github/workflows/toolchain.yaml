@@ -61,13 +61,14 @@ jobs:
             /home/runner/.rustup/toolchains/${{ matrix.rust }}-*
             /home/runner/.rustup/update-hashes/${{ matrix.rust }}-*
             /home/runner/.rustup/settings.toml
-          key: rust-${{ matrix.rust }}-${{ matrix.x64-targets }}-toolchain-${{ hashFiles('~/.rustup/**') }}
+          key: rust-${{ matrix.rust }}-${{ matrix.x64-targets }}-toolchain-${{ hashFiles('../../.rustup/**') }}
 
       - name: Echo hashFiles
         run: |
           ls -la /home/runner/.rustup
           echo $GITHUB_WORKSPACE
           pwd
+          ls -la $GITHUB_WORKSPACE
           echo "HashFiles() ${{ hashFiles('/home/runner/.rustup/settings.toml') }}"
 
       - name: Install RustUp with rustfmt and clippy
