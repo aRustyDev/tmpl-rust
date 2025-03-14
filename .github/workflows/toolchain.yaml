@@ -60,7 +60,7 @@ jobs:
             /home/runner/.rustup/toolchains/${{ matrix.rust }}-*
             /home/runner/.rustup/update-hashes/${{ matrix.rust }}-*
             /home/runner/.rustup/settings.toml
-          key: rust-${{ matrix.rust }}-${{ matrix.x64-targets }}-toolchain
+          key: rust-${{ matrix.rust }}-${{ matrix.x64-targets }}-toolchain-${{ hashFiles('/home/runner/.rustup/toolchains/**', '/home/runner/.rustup/update-hashes/**', '/home/runner/.rustup/settings.toml') }}
 
       - name: Install RustUp with rustfmt and clippy
         uses: actions-rs/toolchain@v1.0.6
