@@ -38,7 +38,7 @@ jobs:
         with:
           service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
       - name: Load secrets
-        id: 1pw
+        id: opw
         uses: 1password/load-secrets-action@v2
         with:
           export-env: false
@@ -49,13 +49,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           # [Required] Access token with `workflow` scope.
-          token: ${{ steps.1pw.outputs.WORKFLOW_SECRET }}
+          token: ${{ steps.opw.outputs.WORKFLOW_SECRET }}
 
       - name: GitHub Actions Version Updater
         uses: saadmk11/github-actions-version-updater@v0.8.1
         with:
           # [Required] Access token with `workflow` scope.
-          token: ${{ steps.1pw.outputs.WORKFLOW_SECRET }}
+          token: ${{ steps.opw.outputs.WORKFLOW_SECRET }}
   label:
     # on: [pull_request_target]
     runs-on: ubuntu-latest
