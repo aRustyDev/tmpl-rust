@@ -1,6 +1,9 @@
 name: "Toolchain Updates/Caching Workflow"
 
 on:
+  push:
+    branches:
+      - gha-*
   schedule:
     - cron: '0 0 * * SAT' # Every sunday at 00:00
 
