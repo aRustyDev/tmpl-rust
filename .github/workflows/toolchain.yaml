@@ -63,7 +63,7 @@ jobs:
         uses: actions/cache@v4.2.2
         with:
           path: |
-            ~/.rustup/toolchains
-            ~/.rustup/update-hashes
-            ~/.rustup/settings.toml
-          key: rust-${{ matrix.rust }}-${{ matrix.x64-targets }}-toolchain-${{ hashFiles('~/.rustup/toolchains/**', '~/.rustup/update-hashes/**', '~/.rustup/settings.toml') }}
+            /home/runner/.rustup/toolchains
+            /home/runner/.rustup/update-hashes
+            /home/runner/.rustup/settings.toml
+          key: rust-${{ matrix.rust }}-${{ matrix.x64-targets }}-toolchain-${{ hashFiles('/home/runner/.rustup/toolchains/**', '/home/runner/.rustup/update-hashes/**', '/home/runner/.rustup/settings.toml') }}
