@@ -33,26 +33,29 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - name: Load secret
+      - name: Configure 1password
+        uses: 1password/load-secrets-action/configure@v2
+        with:
+          service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+      - name: Load secrets
+        id: 1pw
         uses: 1password/load-secrets-action@v2
         with:
-          # Export loaded secrets as environment variables
-          export-env: true
+          export-env: false
         env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           WORKFLOW_SECRET: op://${{ secrets.OP_VAULT }}/gh-workflow/credential
 
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
           # [Required] Access token with `workflow` scope.
-          token: ${{ env.WORKFLOW_SECRET }}
+          token: ${{ steps.1pw.outputs.WORKFLOW_SECRET }}
 
       - name: GitHub Actions Version Updater
         uses: saadmk11/github-actions-version-updater@v0.8.1
         with:
           # [Required] Access token with `workflow` scope.
-          token: ${{ secrets.WORKFLOW_SECRET }}
+          token: ${{ steps.1pw.outputs.WORKFLOW_SECRET }}
   label:
     # on: [pull_request_target]
     runs-on: ubuntu-latest
