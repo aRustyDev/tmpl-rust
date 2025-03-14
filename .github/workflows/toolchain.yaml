@@ -50,6 +50,14 @@ jobs:
           # - i686-pc-windows-msvc      # 32-bit MSVC (Windows 10+, Windows Server 2016+, Pentium 4)
     steps:
       # ----------- rust@stable -----------
+      - name: Cache ${{ matrix.rust }} toolchain
+        uses: actions/cache@v4.2.2
+        with:
+          path: |
+            /home/runner/.rustup/toolchains/${{ matrix.rust }}-*
+            /home/runner/.rustup/update-hashes/${{ matrix.rust }}-*
+            /home/runner/.rustup/settings.toml
+          key: rust-${{ matrix.rust }}-${{ matrix.x64-targets }}-toolchain-${{ hashFiles('/home/runner/.rustup/**') }}
       - name: Install RustUp with rustfmt and clippy
         uses: actions-rs/toolchain@v1.0.6
         with:
@@ -59,11 +67,3 @@ jobs:
           components: rustfmt, clippy
           target: ${{ matrix.x64-targets }}
       
-      - name: Cache toolchain stable
-        uses: actions/cache@v4.2.2
-        with:
-          path: |
-            /home/runner/.rustup/toolchains
-            /home/runner/.rustup/update-hashes
-            /home/runner/.rustup/settings.toml
-          key: rust-${{ matrix.rust }}-${{ matrix.x64-targets }}-toolchain-${{ hashFiles('/home/runner/.rustup/toolchains/**', '/home/runner/.rustup/update-hashes/**', '/home/runner/.rustup/settings.toml') }}
