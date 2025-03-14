@@ -37,14 +37,16 @@ jobs:
         id: main
         uses: andstor/file-existence-action@v3
         with:
-          files: src/main.rs
+          files: "./src/main.rs"
 
       - name: Check for lib.rs 
         id: lib
         uses: andstor/file-existence-action@v3
         with:
-          files: src/lib.rs
-
+          files: "./src/lib.rs"
+      
+      - name: Ls
+        run: ls -la
   semver:
     runs-on: ubuntu-latest
     outputs:
