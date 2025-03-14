@@ -52,6 +52,7 @@ jobs:
       # ----------- rust@stable -----------
       - name: Checkout Repo
         uses: actions/checkout@v4
+      
       - name: Cache ${{ matrix.rust }} toolchain
         id: cache
         uses: actions/cache@v4.2.2
@@ -60,15 +61,18 @@ jobs:
             /home/runner/.rustup/toolchains/${{ matrix.rust }}-*
             /home/runner/.rustup/update-hashes/${{ matrix.rust }}-*
             /home/runner/.rustup/settings.toml
-          key: rust-${{ matrix.rust }}-${{ matrix.x64-targets }}-toolchain-${{ hashFiles('/home/runner/.rustup/toolchains/**', '/home/runner/.rustup/update-hashes/**', '/home/runner/.rustup/settings.toml') }}
+          key: rust-${{ matrix.rust }}-${{ matrix.x64-targets }}-toolchain-${{ hashFiles('/home/runner/.rustup/**') }}
+
+      - name: Echo hashFiles
+        run: echo "HashFiles() ${{ hashFiles('/home/runner/.rustup/toolchains/') }}"
 
       - name: Install RustUp with rustfmt and clippy
-        uses: actions-rs/toolchain@v1.0.6
+        id: toolchain
         if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
-          profile: minimal
           toolchain: ${{ matrix.rust }}
           override: true
           components: rustfmt, clippy
           target: ${{ matrix.x64-targets }}
-      
+          cache-key: rust-${{ matrix.rust }}-${{ matrix.x64-targets }}-toolchain-${{ steps.toolchain.outputs.rustc_hash }}
