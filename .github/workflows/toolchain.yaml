@@ -51,15 +51,18 @@ jobs:
     steps:
       # ----------- rust@stable -----------
       - name: Cache ${{ matrix.rust }} toolchain
+        id: cache
         uses: actions/cache@v4.2.2
         with:
           path: |
             /home/runner/.rustup/toolchains/${{ matrix.rust }}-*
             /home/runner/.rustup/update-hashes/${{ matrix.rust }}-*
             /home/runner/.rustup/settings.toml
-          key: rust-${{ matrix.rust }}-${{ matrix.x64-targets }}-toolchain-${{ hashFiles('/home/runner/.rustup/**') }}
+          key: rust-${{ matrix.rust }}-${{ matrix.x64-targets }}-toolchain
+
       - name: Install RustUp with rustfmt and clippy
         uses: actions-rs/toolchain@v1.0.6
+        if: steps.cache.outputs.cache-hit != 'true'
         with:
           profile: minimal
           toolchain: ${{ matrix.rust }}
