@@ -66,4 +66,4 @@ jobs:
             ~/.rustup/toolchains
             ~/.rustup/update-hashes
             ~/.rustup/settings.toml
-          key: toolchain-${{ hashFiles('rust-toolchain') }}
+          key: rust-${{ matrix.rust }}-${{ matrix.x64-targets }}-toolchain-${{ hashFiles('~/.rustup/toolchains/**', '~/.rustup/update-hashes/**', '~/.rustup/settings.toml') }}
