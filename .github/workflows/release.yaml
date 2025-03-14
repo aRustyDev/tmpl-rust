@@ -156,7 +156,7 @@ jobs:
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           DOCKERHUB_USERNAME: op://${{ env.OPW_VAULT }}/docker/username
-          DOCKERHUB_TOKEN: op://${{ env.OPW_VAULT }}/docker/api_token
+          DOCKERHUB_TOKEN: op://${{ env.OPW_VAULT }}/docker/credential
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
