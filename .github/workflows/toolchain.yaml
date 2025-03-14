@@ -69,7 +69,7 @@ jobs:
           echo $GITHUB_WORKSPACE
           pwd
           ls -la $GITHUB_WORKSPACE
-          echo "HashFiles() ${{ hashFiles('/home/runner/.rustup/settings.toml') }}"
+          echo "HashFiles() ${{ hashFiles('Makefile') }}"
 
       - name: Install RustUp with rustfmt and clippy
         id: toolchain
@@ -94,4 +94,4 @@ jobs:
         run: |
           ls -la /home/runner/.rustup
           pwd
-          echo "HashFiles() ${{ hashFiles('/home/runner/.rustup/**') }}"
+          echo "HashFiles() ${{ hashFiles('Makefile') }}"
