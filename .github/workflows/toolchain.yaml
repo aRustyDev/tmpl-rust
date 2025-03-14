@@ -66,6 +66,7 @@ jobs:
       - name: Echo hashFiles
         run: |
           ls -la /home/runner/.rustup
+          echo $GITHUB_WORKSPACE
           pwd
           echo "HashFiles() ${{ hashFiles('/home/runner/.rustup/settings.toml') }}"
 
