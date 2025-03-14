@@ -39,9 +39,10 @@ jobs:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          WORKFLOW_SECRET: op://${{ secrets.OPW_VAULT }}/gh-workflow/credential
+          WORKFLOW_SECRET: op://${{ secrets.OP_VAULT }}/gh-workflow/credential
 
-      - uses: actions/checkout@v4
+      - name: Checkout Repo
+        uses: actions/checkout@v4
         with:
           # [Required] Access token with `workflow` scope.
           token: ${{ env.WORKFLOW_SECRET }}
