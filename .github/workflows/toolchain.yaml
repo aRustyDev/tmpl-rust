@@ -8,27 +8,27 @@ on:
     - cron: '0 0 * * SAT' # Every sunday at 00:00
 
 jobs:
-  msrv:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Configure 1password
-        uses: 1password/load-secrets-action/configure@v2
-        with:
-          service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-      - name: Load secrets
-        id: opw
-        uses: 1password/load-secrets-action@v2
-        with:
-          export-env: false
-        env:
-          WORKFLOW_SECRET: op://${{ secrets.OP_VAULT }}/gh-workflow/credential
-      - name: Update var.msrv
-        run: |
-            cargo install cargo-msrv
-            gh variable set MSRV --body "$(cargo msrv find --include-all-patch-releases --output-format minimal)"
-        env:
-          GH_TOKEN: ${{ github.token }}
+  # msrv:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Configure 1password
+  #       uses: 1password/load-secrets-action/configure@v2
+  #       with:
+  #         service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+  #     - name: Load secrets
+  #       id: opw
+  #       uses: 1password/load-secrets-action@v2
+  #       with:
+  #         export-env: false
+  #       env:
+  #         WORKFLOW_SECRET: op://${{ secrets.OP_VAULT }}/gh-workflow/credential
+  #     - name: Update var.msrv
+  #       run: |
+  #           cargo install cargo-msrv
+  #           gh variable set MSRV --body "$(cargo msrv find --include-all-patch-releases --output-format minimal)"
+  #       env:
+  #         GH_TOKEN: ${{ github.token }}
   rustup:
     runs-on: ubuntu-latest
     strategy:
