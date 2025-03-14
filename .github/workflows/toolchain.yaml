@@ -64,7 +64,7 @@ jobs:
           key: rust-${{ matrix.rust }}-${{ matrix.x64-targets }}-toolchain-${{ hashFiles('/home/runner/.rustup/**') }}
 
       - name: Echo hashFiles
-        run: echo "HashFiles() ${{ hashFiles('/home/runner/.rustup/toolchains/') }}"
+        run: echo "HashFiles() ${{ hashFiles('/home/runner/.rustup/**') }}"
 
       - name: Install RustUp with rustfmt and clippy
         id: toolchain
@@ -76,3 +76,6 @@ jobs:
           components: rustfmt, clippy
           target: ${{ matrix.x64-targets }}
           cache-key: rust-${{ matrix.rust }}-${{ matrix.x64-targets }}-toolchain-${{ steps.toolchain.outputs.rustc_hash }}
+
+      - name: Echo hashFiles
+        run: echo "HashFiles() ${{ hashFiles('/home/runner/.rustup/**') }}"
