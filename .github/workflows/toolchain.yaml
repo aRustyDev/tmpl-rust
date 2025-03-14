@@ -50,6 +50,8 @@ jobs:
           # - i686-pc-windows-msvc      # 32-bit MSVC (Windows 10+, Windows Server 2016+, Pentium 4)
     steps:
       # ----------- rust@stable -----------
+      - name: Checkout Repo
+        uses: actions/checkout@v4
       - name: Cache ${{ matrix.rust }} toolchain
         id: cache
         uses: actions/cache@v4.2.2
