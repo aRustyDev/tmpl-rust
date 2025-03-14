@@ -6,17 +6,23 @@ on:
       - review_requested
     branches:
       - main
+  push:
+    branches:
+      - gha-*
 
 env:
   IMAGE_NAME: user/app
   DOCKERFILE: ./.config/Dockerfile
   OPW_VAULT: user/app
+  BINARY_NAME: app
 
 jobs:
   file_existence:
     runs-on: ubuntu-latest
     outputs:
       dockerfile: ${{ steps.dockerfile.outputs.files_exists }}
+      main: ${{ steps.main.outputs.files_exists }}
+      lib: ${{ steps.lib.outputs.files_exists }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,6 +32,18 @@ jobs:
         uses: andstor/file-existence-action@v3
         with:
           files: "${{ env.DOCKERFILE }}"
+
+      - name: Check for main.rs 
+        id: main
+        uses: andstor/file-existence-action@v3
+        with:
+          files: src/main.rs
+
+      - name: Check for lib.rs 
+        id: lib
+        uses: andstor/file-existence-action@v3
+        with:
+          files: src/lib.rs
 
   semver:
     runs-on: ubuntu-latest
@@ -43,9 +61,88 @@ jobs:
         id: version
         uses: codacy/git-version@2.7.1
 
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ needs.file_existence.outputs.main == 'true' }}
+    strategy:
+      matrix:
+        rust:
+          - stable
+          - beta
+          - nightly
+          # - ${{ vars.MSRV }}
+        x64-targets:
+          - x86_64-unknown-linux-gnu  # 64-bit Linux (kernel 3.2+, glibc 2.17+)
+          - aarch64-unknown-linux-gnu # ARM64 Linux (kernel 4.1, glibc 2.17+)
+          # - x86_64-apple-darwin       # 64-bit macOS (10.12+, Sierra+)
+          # - aarch64-apple-darwin      # ARM64 macOS (11.0+, Big Sur+)
+          # - x86_64-pc-windows-gnu     # 64-bit MinGW (Windows 10+, Windows Server 2016+)
+          # - x86_64-pc-windows-msvc    # 64-bit MSVC (Windows 10+, Windows Server 2016+, Pentium 4)
+        x32-targets:
+          - i686-unknown-linux-gnu    # 32-bit Linux (kernel 3.2+, glibc 2.17+, Pentium 4)
+          # - i686-pc-windows-gnu       # 32-bit MinGW (Windows 10+, Windows Server 2016+)
+          # - i686-pc-windows-msvc      # 32-bit MSVC (Windows 10+, Windows Server 2016+, Pentium 4)
+    permissions:
+      id-token: write
+      contents: read
+      attestations: write
+      # write permission is required for autolabeler
+      # otherwise, read permission is required at least
+      pull-requests: write
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install RustUp with rustfmt and clippy
+        id: toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust }}
+          targets: ${{ matrix.x64-targets }}
+          components: rustfmt, clippy
+
+      - name: Check cache for Cargo and Target
+        uses: Swatinem/rust-cache@v2.7.7
+        with:
+          key: ${{ matrix.rust }}-${{ matrix.x64-targets }}-${{ steps.toolchain.outputs.cachekey }}
+          shared-key: ${{ matrix.rust }}-${{ matrix.x64-targets }}
+          cache-all-crates: true
+          # Only cache runs from master
+          # save-if: ${{ github.ref == 'refs/heads/master' }}
+          cache-targets: true
+
+      - name: cargo build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release
+
+      - name: Get App Name
+        id: appName
+        uses: mikefarah/yq@v4.45.1
+        with:
+          cmd: yq -oy '.package.name' config.toml
+
+      - name: Get App Version
+        id: appVersion
+        uses: mikefarah/yq@v4.45.1
+        with:
+          cmd: yq -oy '.package.version' config.toml
+        
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: './target/release/${{ steps.appName.outputs.result }}'
+
   docker:
     runs-on: ubuntu-latest
     if: ${{needs.file_existence.outputs.dockerfile}} == 'true'
+    permissions:
+      id-token: write
+      contents: read
+      attestations: write
+      packages: write
     steps:
       - name: Load secret
         uses: 1password/load-secrets-action@v2
@@ -81,11 +178,27 @@ jobs:
           images: ${{ env.IMAGE_NAME }}
 
       - name: Build and export to Docker
+        id: docker_build
         uses: docker/build-push-action@v6
         with:
           load: true
           tags: ${{ needs.semver.outputs.current }}
           file: ${{ env.DOCKERFILE }} 
+
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          subject-digest: ${{ steps.docker_build.outputs.digest }}
+
+      - name: Run cargo-sbom
+        run: cargo-sbom --output-format=cyclone_dx_json_1_4 > .github/data/sbom.cyclonedx.json
+
+      - name: Generate SBOM attestation
+        uses: actions/attest-sbom@v1
+        with:
+          subject-path: './target/release/${{ env.BINARY_NAME }}'
+          sbom-path: '.github/data/sbom.cyclonedx.json'
 
       - name: Test
         run: |
@@ -109,6 +222,8 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
+    needs: [ file_existence, build]
+    if: ${{ needs.file_existence.outputs.main == 'true' }}
     permissions:
       # write permission is required to create a github release
       contents: write
@@ -118,13 +233,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Release Drafter
         uses: release-drafter/release-drafter@v6.1.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+
       - name: GH Release
         uses: softprops/action-gh-release@v2.2.1
-        if: startsWith(github.ref, 'refs/tags/')
+        # if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
             Release.txt
