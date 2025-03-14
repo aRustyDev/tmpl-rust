@@ -67,7 +67,7 @@ jobs:
         run: |
           ls -la /home/runner/.rustup
           pwd
-          echo "HashFiles() ${{ hashFiles('/home/runner/.rustup/**') }}"
+          echo "HashFiles() ${{ hashFiles('/home/runner/.rustup/settings.toml') }}"
 
       - name: Install RustUp with rustfmt and clippy
         id: toolchain
