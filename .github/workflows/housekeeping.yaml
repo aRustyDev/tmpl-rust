@@ -1,9 +1,6 @@
 name: "Housekeeping Workflow"
 
 on:
-  push:
-    branches:
-      - gha-*
   schedule:
     - cron: '0 0 * * SUN' # Every sunday at 00:00
 
