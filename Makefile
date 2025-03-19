@@ -1,15 +1,15 @@
 # .PHONY: 
 
-URL=$(git remote -v | rg fetch | rg -o "\S+://\S+")
-REPO=$(basename $(git rev-parse --show-toplevel))
-ORG=$(git remote -v | rg fetch | sed 's|.*://[^/]*/||' | rg -o '^[^/]+')
-USER=$(git config user.name)
+URL=`git remote -v | rg fetch | rg -o "\S+://\S+"`
+REPO=$(shell basename `git rev-parse --show-toplevel`)
+ORG=`git remote -v | rg fetch | sed 's|.*://[^/]*/||' | rg -o '^[^/]+'`
+USER=`git config user.name`
 
 secrets:
 	@ .scripts/opw.sh $(REPO) $(URL) $("TODO:VaultNew") $(USER) $("TODO:VaultOrig")
 
 check:
-	@ ./scripts/dependencies.sh $(ORG) $(REPO)
+	@ .scripts/dependencies.sh $(ORG) $(REPO)
 
 install: git
 	@ python -m pip install --upgrade pip
@@ -31,10 +31,10 @@ git: check
 	@ sed -i -e 's/GitUserName/$(USER)/g' .github/CODEOWNERS
 
 manual:
-	@ ./scripts/manual.sh $(ORG) $(REPO)
+	@ .scripts/manual.sh $(ORG) $(REPO)
 
 cargo:
-	@ ./scripts/cargo.sh
+	@ .scripts/cargo.sh
 
 clean:
 	@ echo "TODO: reset git config"
