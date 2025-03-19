@@ -109,6 +109,9 @@ tests/rustdoc-gui/src/**.lock
 /.envrc
 /.direnv/
 
+## pre-commit
+.pre-commit-config.mine.yaml
+
 ## nix
 /flake.nix
 flake.lock
