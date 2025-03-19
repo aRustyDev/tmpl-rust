@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Stale Branches
         uses: crs-k/stale-branches@v7.0.0
-      - uses: actions/stale@v5
+      - uses: actions/stale@v9.1.0
         with:
           repo-token: ${{ github.token }} # secrets.GITHUB_TOKEN
           stale-issue-message: 'Stale issue message'
@@ -43,7 +43,7 @@ jobs:
           WORKFLOW_SECRET: op://${{ secrets.OP_VAULT }}/gh-workflow/credential
 
       - name: Checkout Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
         with:
           # [Required] Access token with `workflow` scope.
           token: ${{ steps.opw.outputs.WORKFLOW_SECRET }}
@@ -61,7 +61,7 @@ jobs:
       pull-requests: write
 
     steps:
-    - uses: actions/labeler@v4
+    - uses: actions/labeler@v5.0.0
       with:
         repo-token: "${{ github.token }}"
 
