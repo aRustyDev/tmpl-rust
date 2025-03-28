@@ -1,0 +1,91 @@
+{
+    "active_pane_modifiers": {
+        "magnification": 1.0,
+        "border_size": 1.0,
+        "inactive_opacity": 1.0
+    },
+    "tab_size": 4,
+    "telemetry": {
+        "diagnostics": true,
+        "metrics": true
+    },
+    "autosave": "off",
+    "terminal": {
+        "alternate_scroll": "on",
+        "blinking": "terminal_controlled",
+        "copy_on_select": false,
+        "dock": "bottom",
+        "detect_venv": {
+            "on": {
+                "directories": [".env", "env", ".venv", "venv"],
+                "activate_script": "default"
+            }
+        },
+        "env": {},
+        "font_family": null,
+        "font_features": null,
+        "font_size": null,
+        "line_height": "comfortable",
+        "option_as_meta": false,
+        "button": false,
+        "shell": {},
+        "toolbar": {
+            "breadcrumbs": true
+        },
+        "working_directory": "current_project_directory",
+        "scrollbar": {
+            "show": null
+        }
+    },
+    "auto_install_extensions": {
+        "html": true,
+        "dockerfile": true,
+        "docker-compose": false,
+        "toml": true,
+        "csv": true,
+        "make": true,
+        "log": true,
+        "git-firefly": true,
+        "sql": false,
+        "graphql": false,
+        "scss": false,
+        "biome": false,
+        "env": false,
+        "markdown-oxide": false,
+        "basher": false,]
+        "ini": false,
+        "proto": false,
+        "typst": false,
+        "wakatime": false,
+        "marksman": false,
+        "typos-spell-checker": false,
+        "helm": false,
+        "cargotom": false,
+        "asciidoc": false,
+        "mermaid": false,
+        "superhtml": false,
+        "unocss": false,
+        "cue": false,
+        "plantuml": false,
+        "rest": false,
+        "code-stats": false,
+        "surrealdb": false,
+        "strace": false,
+        "capn-proto": false,
+        "rego": false,
+        "graphviz": false,
+        "libsql": false,
+        "unicode": false,
+        "earthfile": false,
+        "hurl": false,
+        "vacuum": false,
+        "flatbuffers": false,
+        "sqruff": false,
+        "rpmspec": false,
+        "fiberplane": false,
+        "treesitter-query": false,
+        "exograph": false,
+        "cypher": false,
+        "cylc": false
+    }
+}
