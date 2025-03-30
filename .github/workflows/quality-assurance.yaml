@@ -15,27 +15,27 @@ jobs:
       previous: ${{ steps.version.outputs.previous-version }} 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
         with:
           ref: ${{ github.head_ref }}   # checkout the correct branch name
           fetch-depth: 0                # fetch the whole repo history
 
       - name: Git Version
         id: version
-        uses: codacy/git-version@2.7.1
+        uses: codacy/git-version@2.8.0
 
   coverage:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
 
-      - uses: actions-rs/toolchain@v1
+      - uses: actions-rs/toolchain@v1.0.6
         name: install rust toolchain
         with:
           toolchain: nightly
           override: true
 
-      - uses: actions-rs/grcov@v0.1
+      - uses: actions-rs/grcov@v0.1.5
 
       - name: Run cargo-tarpaulin
         uses: actions-rs/tarpaulin@v0.1
@@ -53,7 +53,7 @@ jobs:
           CODECOV_TOKEN: op://${{ env.OPW_VAULT }}/codecov/api_token
 
       - name: Upload to codecov.io
-        uses: codecov/codecov-action@v1.0.2
+        uses: codecov/codecov-action@v5.4.0
         with:
           token: ${{ env.CODECOV_TOKEN }}
 
@@ -66,7 +66,7 @@ jobs:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
       - name: Archive code coverage results
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: code-coverage-report
           path: cobertura.xml
@@ -74,20 +74,20 @@ jobs:
   format:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
 
-      - uses: actions-rs/toolchain@v1
+      - uses: actions-rs/toolchain@v1.0.6
         name: install rust toolchain
         with:
           toolchain: nightly
           override: true
 
-      - uses: actions-rs/cargo@v1
+      - uses: actions-rs/cargo@v1.0.1
         name: run cargo fmt
         with:
           command: fmt
 
-      - uses: actions-rs/cargo@v1
+      - uses: actions-rs/cargo@v1.0.1
         name: run cargo clippy
         with:
           command: clippy
@@ -95,20 +95,20 @@ jobs:
   testing:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
 
-      - uses: actions-rs/toolchain@v1
+      - uses: actions-rs/toolchain@v1.0.6
         name: install rust toolchain
         with:
           toolchain: nightly
           override: true
 
-      - uses: actions-rs/cargo@v1
+      - uses: actions-rs/cargo@v1.0.1
         name: run cargo fmt
         with:
           command: fmt
 
-      - uses: actions-rs/cargo@v1
+      - uses: actions-rs/cargo@v1.0.1
         with:
           command: test
           args: --all-features --no-fail-fast
@@ -120,15 +120,15 @@ jobs:
   documentation:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
 
-      - uses: actions-rs/toolchain@v1
+      - uses: actions-rs/toolchain@v1.0.6
         name: install rust toolchain
         with:
           toolchain: nightly
           override: true
 
-      - uses: actions-rs/cargo@v1
+      - uses: actions-rs/cargo@v1.0.1
         name: run cargo doc
         with:
           command: doc
@@ -136,15 +136,15 @@ jobs:
   benchmark:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
 
-      - uses: actions-rs/toolchain@v1
+      - uses: actions-rs/toolchain@v1.0.6
         name: install rust toolchain
         with:
           toolchain: nightly
           override: true
 
-      - uses: actions-rs/cargo@v1
+      - uses: actions-rs/cargo@v1.0.1
         name: run cargo bench
         with:
           command: bench
@@ -157,7 +157,7 @@ jobs:
   audit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
 
       - name: Load secret
         uses: 1password/load-secrets-action@v2
@@ -169,23 +169,23 @@ jobs:
           SNYK_TOKEN: op://${{ env.OPW_VAULT }}/snyk/key_name
           GITGUARDIAN_API_KEY: op://${{ env.OPW_VAULT }}/gitguardian/key_name
 
-      - uses: actions-rs/toolchain@v1
+      - uses: actions-rs/toolchain@v1.0.6
         name: install rust toolchain
         with:
           toolchain: nightly
           override: true
 
-      - uses: actions-rs/audit-check@v1
+      - uses: actions-rs/audit-check@v1.2.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           
       - name: TruffleHog OSS
-        uses: trufflesecurity/trufflehog@v3.88.16
+        uses: trufflesecurity/trufflehog@v3.88.20
 
       # - name: Snyk
       #   uses: snyk/actions@0.4.0
 
-      - uses: gitleaks/gitleaks-action@v2
+      - uses: gitleaks/gitleaks-action@v2.3.7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
