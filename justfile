@@ -5,6 +5,7 @@ init:
 	cargo install tdd-guard-rust nextest
 	cargo crev new id
 	cargo crev trust --level high https://github.com/rust-secure/rust-reviews
+	cargo registry init --registry-path /path/to/registry
 	pyenv install "{{ PYTHON_VERSION }}"
 	pyenv local "{{ PYTHON_VERSION }}"
 	pip install pre-commit
@@ -34,6 +35,13 @@ clean:
 check:
 	cargo check
 	cargo outdated
+	cargo vendor
+	cargo minimal-versions check
+	cargo inspect check
 
 update:
 	cargo update --package tokio --precise 1.32.1
+
+publish:
+	cargo build --release
+	cargo publish --registry my-registry
