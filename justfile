@@ -1,6 +1,9 @@
 
 PYTHON_VERSION := 3.12
 
+default:
+	just -f "{{ justfile() }}" --list
+
 init:
 	cargo install tdd-guard-rust nextest
 	cargo crev new id
@@ -19,18 +22,25 @@ init:
 	echo "Setting up CODEOWNERS"
 	sed -i -e 's/GitUserName/$(USER)/g' .github/CODEOWNERS
 	echo "TODO: Install cargo crates by manifest"
+	rustup update
+	rustup component add cargo-next
+	rustup default stable-2025-05-01
+	cargo new --workspace microservices
 
 test:
 	cargo audit
 	cargo deny check
 	cargo crev verify
 	cargo nextest run 2>&1 | tdd-guard-rust --project-root $PWD --passthrough
+	cargo bench --baseline main
 
 install:
 	@ cargo install --path . 
 
 clean:
 	@ echo "TODO: clean build files"
+	cargo clean
+	cargo update
 
 check:
 	cargo check
@@ -38,6 +48,9 @@ check:
 	cargo vendor
 	cargo minimal-versions check
 	cargo inspect check
+	cargo license
+	cargo graph
+	cargo tree -d
 
 update:
 	cargo update --package tokio --precise 1.32.1
@@ -45,3 +58,6 @@ update:
 publish:
 	cargo build --release
 	cargo publish --registry my-registry
+
+fix:
+	cargo fix --edition 2027
