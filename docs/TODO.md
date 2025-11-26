@@ -15,7 +15,6 @@ trainingclass.dev
 customerexperience.dev
 painpoints.app
 
-
 https://crates.guide/article/Rust_Package_Testing_Strategies_and_Tools.html
 - proptest "property-based testing"
 - criterion "benchmarking"
@@ -26,6 +25,7 @@ https://crates.guide/article/Rust_Package_Testing_Strategies_and_Tools.html
 - cargo-nextest
 - cargo-llvm-cov
 - cargo-fuzz
+- cargo-crev
 - "unit tests"
 
 https://markaicode.com/rust-lsp-servers-2025-performance-benchmarks-feature-comparison/
