@@ -5,7 +5,7 @@ default:
 	just -f "{{ justfile() }}" --list
 
 init:
-	cargo install tdd-guard-rust nextest
+	cargo install tdd-guard-rust cargo-nextest
 	volta install tdd-guard
 	cargo crev new id
 	cargo crev trust --level high https://github.com/rust-secure/rust-reviews
