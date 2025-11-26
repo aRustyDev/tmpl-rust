@@ -1,6 +1,75 @@
 ---
 cargo:
   - nextest
+  # https://dev.to/cad97/rust-must-know-crates-5ad8
+  - tdd-guard-rust
+  - cargo-nextest: https://nexte.st/
+  - cargo-crev: https://lib.rs/crates/cargo-crev
+  - cargo-audit: https://crates.io/crates/cargo-audit
+  - cargo registry
+  - cargo-deny
+  - cargo-vendor
+  - cargo-criterion: https://docs.rs/crate/cargo-criterion/latest
+  - cargo-outdated: https://github.com/kbknapp/cargo-outdated
+  - cargo-minimal-versions
+  - cargo-inspect
+  - cargo-fuzz: https://github.com/rust-fuzz/cargo-fuzz
+  - cargo-tarpaulin
+  - cargo-machete: https://github.com/bnjbvr/cargo-machete
+  - cargo-make: https://github.com/sagiegurari/cargo-make
+  - cargo-flamegraph: https://github.com/flamegraph-rs/flamegraph
+  - cargo-geiger: https://github.com/geiger-rs/cargo-geiger
+  - cargo-hack: https://github.com/taiki-e/cargo-hack
+  - cargo-bloat: https://github.com/RazrFalcon/cargo-bloat
+  - cargo-mutants: https://github.com/sourcefrog/cargo-mutants
+  - kani-verifier: https://github.com/model-checking/kani
+  - watchexec: https://github.com/watchexec/watchexec
+  - cargo-binstall: https://github.com/cargo-bins/cargo-binstall
+  - cargo-expand: https://github.com/dtolnay/cargo-expand
+  - cargo-asm: https://github.com/gnzlbg/cargo-asm
+  - cargo-show-asm: https://www.libhunt.com/r/cargo-show-asm
+  - cargo-semver-checks: https://github.com/obi1kenobi/cargo-semver-checks
+  - cargo-chef: https://github.com/LukeMathWalker/cargo-chef
+  - cargo-release: https://github.com/crate-ci/cargo-release
+  - release-plz: https://github.com/release-plz/release-plz
+  - cargo-instruments: https://www.libhunt.com/r/cargo-instruments
+  - cargo-about: https://www.libhunt.com/r/cargo-about
+  - cargo-auditable: https://www.libhunt.com/r/cargo-auditable
+  - cargo-spellcheck: https://www.libhunt.com/r/cargo-spellcheck
+  - cargo-public-api: https://www.libhunt.com/r/cargo-public-api
+  - cargo-swift: https://www.libhunt.com/r/cargo-swift
+  - cargo-depgraph: https://www.libhunt.com/r/cargo-depgraph
+  - cyclonedx-rust-cargo: https://www.libhunt.com/r/cyclonedx-rust-cargo
+  - cargo-aur: https://www.libhunt.com/r/cargo-aur
+  - cargo-visualize: https://www.libhunt.com/r/cargo-visualize
+  - cargo-limit: https://www.libhunt.com/r/cargo-limit
+  - cargo-checkmate: 
+  - cargo-ai-assistant: 
+  - cargo-code-analyzer: 
+  - cargo-dependency-optimizer: 
+  - cargo-modules: 
+  - cargo-tree: 
+  - cargo-clone: https://lib.rs/crates/cargo-clone
+  - cargo-valgrind: https://github.com/jfrimmel/cargo-valgrind
+  # https://github.com/vmfunc/cargo-buttplug
+  - cargo-sort-derives: https://github.com/lusingander/cargo-sort-derives
+  - cargo-trend: https://github.com/dalance/cargo-trend
+  - cargo-docs: https://github.com/btwiuse/cargo-docs
+  - cargo-msrv: https://github.com/kbknapp/cargo-msrv-table
+  - cargo-size: https://github.com/jfrimmel/cargo-size
+   
+  # cargo add testcontainers
+  # cargo add testcontainers-modules
+  # cargo add tokio-console
+  
+  # cargo check
+  # cargo outdated
+  # cargo vendor
+  # cargo minimal-versions check
+  # cargo inspect check
+  # cargo license
+  # cargo graph
+  # cargo tree -d
 version:
   rust: 1.75
   debian: trixie
