@@ -1,3 +1,6 @@
 ---
 cargo:
   - nextest
+version:
+  rust: 1.75
+  debian: trixie
