@@ -6,6 +6,7 @@ default:
 
 init:
 	cargo install tdd-guard-rust nextest
+	volta install tdd-guard
 	cargo crev new id
 	cargo crev trust --level high https://github.com/rust-secure/rust-reviews
 	cargo registry init --registry-path /path/to/registry
