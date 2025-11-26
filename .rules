@@ -1,0 +1,68 @@
+- Follow DRY: check for existing code before creating new
+- the project INDEX is located at `.ai/INDEX.md`
+- Every Project MUST have a UUIDv4 identifier:
+  - Stored in `git config --local project.id`
+  - Mirrored in `.meta.json` at project root: `{"id":"<uuid>"}`
+  - Auto-generate if missing: `git config --local project.id "$(uuidgen)"`
+- Every document SHOULD have a UUIDv4 identifier:
+  - Markdown: frontmatter `id: <uuid>`
+  - Code: First-line comment `<comment-char> id:<uuid>` using language syntax
+- Use the Graphiti MCP Server for all persistent memory:
+  - Namespace: `{PROJECT_ID}::` from `git config --get project.id`
+  - Store preferences/configs as entity attributes
+  - Store decisions/architecture as entities with relationships
+  - Embed document content for semantic search
+  - Create temporal relationships (when decisions were made)
+  - Search with hybrid mode: `search(query, project_filter)`
+  - Session start:
+    - Query `{PROJECT_ID}::*` entities for context
+    - Use `whoami` to identify the current user
+       - Create or retrieve user profile from the knowledge graph
+  - Session end: Add new decisions/learnings as entities
+  - NEVER access entities outside current project namespace
+  - Always refer to your knowledge graph as your "memory"
+- when referencing documents
+    - prefer UUID-based references over file paths
+    - maintain bidirectional links (if A relates to B, B should relate to A)
+- all markdown documents must have YAML frontmatter
+    - required fields: id, title, status, date, author
+    - id format: UUID v4 (uppercase with hyphens)
+    - status format: emoji prefix + status text (e.g., "✅ Completed")
+    - date format: YYYY-MM-DD
+    - optional fields: 
+      - related (array of UUIDs)
+      - children (array of UUIDs)
+    - see adr-frontmatter-standard.md for complete specification
+- Plans
+  - Status:
+    - `✅ Completed` - Work finished, document archived
+    - `⏳ In Progress` - Actively being worked on
+    - `📝 Draft` - Initial draft, not reviewed
+    - `🗄️ Archived` - Historical, no longer maintained
+    - `🔄 Under Review` - Awaiting review/approval
+    - `❌ Deprecated` - Superseded by newer document
+    - `🎯 Proposed` - Proposed but not approved
+  - Locations:
+    - Plans: `.ai/plans/<plan_name>.md`
+    - Phases: `.ai/plans/phases/<plan_name>.phase-<phase_number>.md`
+  - Plan phases exist as individual markdown documents.
+  - Plan Lifecycle
+    - Draft: The Exploratory / Pre-Planning phase
+    - Proposal: The plan has been selected from options, and is not finalized
+    - Creation: 
+      - Determine if the work should extend an existing plan or start a new one
+      - Update the INDEX.md to include the Plan, and component phases
+  - Phase Lifecycle
+    - Start
+      - Update the status in the phase & plan documents
+    - Complete
+      - Update the status in the phase & plan documents
+- linter configs in root or `.github/linters/` when tool supports it
+- When new work is started, determine if the work should extend an existing plan or start a new one
+- after finishing a set work defined in a plan, always do the following
+    - first, update the plan to reflect your progress
+    - second, update the CHANGELOG.md to include the work just done
+    - third, create a commit for the last phase
+    - fourth, review the plan before continuing to the next phase
+- Use the github MCP Server whenever you need to interact with a GitHub API or Repo
+- Use the Sequential-Thinking MCP Server for all Planning and debugging activities.
