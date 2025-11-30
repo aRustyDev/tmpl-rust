@@ -39,6 +39,26 @@ repos:
     # - id: rustc
     - id: cargo-bench
 
+- repo: https://github.com/streetsidesoftware/cspell-cli
+  rev: v9.3.3
+  hooks:
+    - id: cspell # Spell check changed files
+      args:
+        - --config
+        - .config/cspell.json
+    - id: cspell # Spell check the commit message
+      name: check commit message spelling
+      args:
+        - --config
+        - .config/cspell.json
+        - --no-must-find-files
+        - --no-progress
+        - --no-summary
+        - --files
+        - .git/COMMIT_EDITMSG
+      stages: [commit-msg]
+      always_run: true # This might not be necessary.
+
 - repo: https://github.com/doublify/pre-commit-rust
   rev: v1.0
   hooks:
