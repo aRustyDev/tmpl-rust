@@ -17,3 +17,11 @@ Syft
 Anchore
 venv
 pyenv
+codeowners
+codeowner
+gpgsign
+uuidgen
+signingkey
+envsubst
+justfile
+pipefail

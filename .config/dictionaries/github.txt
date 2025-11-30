@@ -1,1 +1,7 @@
 taiki-e
+CODEOWNERS
+mdbook
+isaacphi
+ychen
+mindmap
+ckreiling

@@ -1,5 +1,8 @@
-RUST_VERSION := "1.83"
-PYTHON_VERSION := "3.12"
+set shell := ["/opt/homebrew/bin/bash", "-euo", "pipefail", "-c"]
+
+export RUST_VERSION := "1.83"
+export PYTHON_VERSION := "3.12"
+export PROJECT_DIR := justfile()
 email := `git config --local user.email || echo "TODO: git config --local user.email"`
 user := `git config --local user.name || echo "TODO: git config --local user.name"`
 registry := `git config remote.origin.url | sed 's/^git@//g; s|^https?://||g' | grep -o '^[a-zA-Z0-9\.\-]*'`
@@ -13,19 +16,23 @@ default:
 init name: git-config (codeowners user)
     rustup update
     rustup default nightly
-    # yq '.cargo | keys[]' .config/manifest.yaml | xargs -I {} {{ require("cargo") }} install {} --locked
+    yq '.cargo | keys[]' .config/manifest.yaml | xargs -I {} {{ require("cargo") }} install {} --locked
     yq '.node | keys[]' .config/manifest.yaml | xargs -I {} volta install {}
     sed -i '' -e 's/FROM rust:.*/FROM rust:{{ RUST_VERSION }}-slim/g' docker/workspace.Dockerfile
     sed -i '' -e 's/^title = .*/title = "{{ name }}"/' docs/book.toml
     sed -i '' -e 's/^authors = .*/authors = ["{{ user }}"]/' docs/book.toml
     pyenv install --skip-existing "{{ PYTHON_VERSION }}" && pyenv local "{{ PYTHON_VERSION }}"
     pip install --upgrade pip
-    # pip install pre-commit && pre-commit install --install-hooks --overwrite
+    pip install --upgrade uv
+    pip install pre-commit && pre-commit install --install-hooks --overwrite
     jq '.' .zed/settings.example.json | envsubst > .zed/settings.json
     jq '.' .vscode/settings.example.json | envsubst > .vscode/settings.json
     cargo install --git https://github.com/8b-is/smart-tree --tag v5.4.0 st
-    # cargo crev id set-url "https://{{ registry }}/{{ repo }}"
-    # cargo crev trust --level high https://github.com/rust-secure/rust-reviews
+    go install github.com/isaacphi/mcp-language-server@latest
+    cat .zed/settings.example.json | envsubst > .zed/settings.json
+    cat .vscode/settings.example.json | envsubst > .vscode/settings.json
+    cargo crev id set-url "https://{{ registry }}/{{ repo }}"
+    cargo crev trust --level high https://github.com/rust-secure/rust-reviews
 
 [macos]
 git-config:

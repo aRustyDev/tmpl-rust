@@ -8,3 +8,5 @@ rustdoc
 MSRV
 cargotom
 rustup
+crev
+nextest

@@ -45,8 +45,15 @@
     },
     "filesystem": {
       "source": "custom",
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "$PROJECT_DIR"]
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-v",
+        "$PROJECT_DIR:/workspace",
+        "ghcr.io/arustydev/mcp:filesystem"
+      ]
     },
     "git": {
       "source": "custom",
@@ -67,7 +74,7 @@
     "rust-lsp": {
       "source": "custom",
       "command": "mcp-language-server",
-      "args": ["--workspace", "$PROJECT_DIR", "--lsp", "rust-lsp-executable"],
+      "args": ["--workspace", "$PROJECT_DIR", "--lsp", "rust-analyzer"],
       "env": {
         "LOG_LEVEL": "DEBUG"
       }
@@ -75,6 +82,41 @@
     "char-index": {
       "command": "uvx",
       "args": ["char-index-mcp"]
+    },
+    "mindmap-converter": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "-v",
+        "$PWD/.data:/output",
+        "ychen94/mindmap-converter-mcp:latest"
+      ]
+    },
+    "docker": {
+      // https://www.augmentcode.com/mcp/mcp-server-docker
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "--name",
+        "mcp",
+        "-p",
+        "8080:8080",
+        "-e",
+        "MCP_MODEL_PATH='/models/llama3'",
+        "-v",
+        "$PWD/data:/var/lib/mcp",
+        "ckreiling/mcp-server"
+      ]
+    },
+    "shrimp-task-manager": {
+      "command": "node",
+      "args": ["/Users/arustydev/repos/mcp/shrimp-task-manager/dist/index.js"],
+      "env": {
+        "DATA_DIR": "$XDG_DATA_HOME/mcp/shrimp-task-manager"
+      }
     }
   },
   "tab_size": 4,

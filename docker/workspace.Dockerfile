@@ -8,11 +8,6 @@
 # 7. [ ] Install Local MCP Servers
 #   - smart-tree
 #   - mcp-language-server
-#   - rust-lsp
-#   - hana-lsp
-#   - rust-gpt-lsp
-#   - crates
-#   - rust-docs
 
 # /Users/arustydev/repos/templates/rust/Dockerfile.dev
 FROM rust:1.83-slim
