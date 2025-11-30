@@ -1,0 +1,4 @@
+[book]
+title = "foo"
+authors = ["TODO: git config --local user.name"]
+language = "en"
