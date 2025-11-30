@@ -1,5 +1,5 @@
 {
-  "dictionaries": ["rust", "pre-commit"],
+  "dictionaries": ["rust", "pre-commit", "ai", "zed", "personal"],
   "dictionaryDefinitions": [
     {
       "name": "rust",
@@ -11,6 +11,24 @@
       "name": "pre-commit",
       // Path to the custom word file. Relative to this `cspell.json` file.
       "path": "./dictionaries/pre-commit.txt",
+      "addWords": true
+    },
+    {
+      "name": "ai",
+      // Path to the custom word file. Relative to this `cspell.json` file.
+      "path": "./dictionaries/ai.txt",
+      "addWords": true
+    },
+    {
+      "name": "zed",
+      // Path to the custom word file. Relative to this `cspell.json` file.
+      "path": "./dictionaries/zed.txt",
+      "addWords": true
+    },
+    {
+      "name": "personal",
+      // Path to the custom word file. Relative to this `cspell.json` file.
+      "path": "./dictionaries/personal.txt",
       "addWords": true
     }
   ]

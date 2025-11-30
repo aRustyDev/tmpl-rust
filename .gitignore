@@ -17,11 +17,10 @@ Session.vim
 .cproject
 .idea
 *.iml
-.vscode
+
 .project
 .vim/
 .helix/
-.zed/
 .favorites.json
 .settings/
 .vs/

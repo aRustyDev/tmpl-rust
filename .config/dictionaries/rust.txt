@@ -6,3 +6,4 @@ MSVC
 Rustdoc
 rustdoc
 MSRV
+cargotom

@@ -1,0 +1,16 @@
+typst
+wakatime
+superhtml
+unocss
+surrealdb
+capn
+rego
+graphviz
+libsql
+earthfile
+flatbuffers
+sqruff
+rpmspec
+fiberplane
+exograph
+cylc

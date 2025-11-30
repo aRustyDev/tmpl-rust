@@ -1,0 +1,8 @@
+{
+  "genericLSP.languageId": {
+    "rust": "rust"
+  },
+  "genericLSP.serverPath": {
+    "rust": "rust-lsp"
+  }
+}
