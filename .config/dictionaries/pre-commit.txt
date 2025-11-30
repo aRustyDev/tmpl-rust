@@ -8,3 +8,10 @@ pycache
 cproject
 citool
 envrc
+dockerhub
+Semgrep
+Creds
+OSSAR
+OSSF
+Syft
+Anchore
