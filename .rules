@@ -29,7 +29,7 @@
     - id format: UUID v4 (uppercase with hyphens)
     - status format: emoji prefix + status text (e.g., "✅ Completed")
     - date format: YYYY-MM-DD
-    - optional fields: 
+    - optional fields:
       - related (array of UUIDs)
       - children (array of UUIDs)
     - see adr-frontmatter-standard.md for complete specification
@@ -49,7 +49,7 @@
   - Plan Lifecycle
     - Draft: The Exploratory / Pre-Planning phase
     - Proposal: The plan has been selected from options, and is not finalized
-    - Creation: 
+    - Creation:
       - Determine if the work should extend an existing plan or start a new one
       - Update the INDEX.md to include the Plan, and component phases
   - Phase Lifecycle
@@ -66,3 +66,7 @@
     - fourth, review the plan before continuing to the next phase
 - Use the github MCP Server whenever you need to interact with a GitHub API or Repo
 - Use the Sequential-Thinking MCP Server for all Planning and debugging activities.
+- When you need to reference library APIs or patterns:
+  - Use Context7 to get current documentation
+  - Prefer official examples over assumptions
+  - Check for version-specific changes

@@ -11,6 +11,7 @@ cargo:
   cargo-criterion: https://docs.rs/crate/cargo-criterion/latest
   cargo-outdated: https://github.com/kbknapp/cargo-outdated
   cargo-minimal-versions: ""
+  # lsp-ai: "https://www.libhunt.com/r/lsp-ai"
   cargo-inspect: ""
   cargo-fuzz: https://github.com/rust-fuzz/cargo-fuzz
   cargo-tarpaulin: ""

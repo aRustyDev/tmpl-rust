@@ -1,0 +1,27 @@
+---
+services:
+    rust-dev:
+      build:
+        context: .
+        dockerfile: workspace.Dockerfile
+      container_name: rust-dev
+      working_dir: /workspace
+      volumes:
+        # Mount project code
+        - .:/workspace
+        # Cache cargo registry (faster rebuilds)
+        - cargo-cache:/usr/local/cargo/registry
+        - cargo-git:/usr/local/cargo/git
+        # Cache build artifacts
+        - target-cache:/workspace/target
+      environment:
+        - RUST_BACKTRACE=1
+      # Keep container running
+      command: sleep infinity
+      stdin_open: true
+      tty: true
+
+volumes:
+  cargo-cache:
+  cargo-git:
+  target-cache:
