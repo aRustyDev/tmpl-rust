@@ -7,3 +7,4 @@ Rustdoc
 rustdoc
 MSRV
 cargotom
+rustup
