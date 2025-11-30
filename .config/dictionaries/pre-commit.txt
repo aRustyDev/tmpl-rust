@@ -1,3 +1,10 @@
 EDITMSG
 shfmt
 shellcheck
+direnv
+envrc
+direnv
+pycache
+cproject
+citool
+envrc

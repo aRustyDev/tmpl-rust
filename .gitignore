@@ -96,6 +96,7 @@ TAGS.*
 __pycache__/
 *.py[cod]
 *$py.class
+.python-version
 
 ## Node
 node_modules
