@@ -1,4 +1,6 @@
 set shell := ["/opt/homebrew/bin/bash", "-euo", "pipefail", "-c"]
+import ".scripts/github.just"
+import ".scripts/opw.just"
 
 export RUST_VERSION := "1.83"
 export PYTHON_VERSION := "3.12"
@@ -13,7 +15,7 @@ default:
     just -f "{{ justfile() }}" --list
 
 # Initialize a new project
-init name: git-config (codeowners user)
+init name: git-config (codeowners user) (github-init repo)
     rustup update
     rustup default nightly
     yq '.cargo | keys[]' .config/manifest.yaml | xargs -I {} {{ require("cargo") }} install {} --locked
@@ -65,7 +67,7 @@ test:
 
 # Install the project binary locally
 install:
-    @ cargo install --path .
+    @cargo install --path .
 
 # Remove all generated files
 clean:

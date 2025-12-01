@@ -25,3 +25,16 @@ signingkey
 envsubst
 justfile
 pipefail
+flamegraph
+kani
+watchexec
+binstall
+depgraph
+cyclonedx
+testcontainers
+trixie
+saithodev
+PROFDATA
+GITEA
+Gitea
+gitea

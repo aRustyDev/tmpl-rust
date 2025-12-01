@@ -8,14 +8,7 @@
     "ast-grep": {
       "source": "custom",
       "command": "docker",
-      "args": [
-        "run",
-        "-i",
-        "--rm",
-        "-v",
-        ":/data",
-        "mcp/ast-grep"
-      ],
+      "args": ["run", "-i", "--rm", "-v", ":/data", "mcp/ast-grep"],
       "env": {
         "PROJECT_DIR": "/Users/arustydev/repos/templates/rust"
       }
@@ -38,10 +31,7 @@
     "just": {
       "source": "custom",
       "command": "just-mcp",
-      "args": [
-        "--watch-dir",
-        ""
-      ]
+      "args": ["--watch-dir", ""]
     },
     "FileScopeMCP": {
       "command": "node",
@@ -56,57 +46,52 @@
     "filesystem": {
       "source": "custom",
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        ""
-      ]
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", ""]
     },
     "git": {
       "source": "custom",
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/git",
-        ""
-      ]
+      "args": ["-y", "@modelcontextprotocol/git", ""]
     },
     "sqlite": {
       "source": "custom",
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/sqlite",
-        ""
-      ]
+      "args": ["-y", "@modelcontextprotocol/sqlite", ""]
     },
     "smart-tree": {
       "source": "custom",
       "command": "st",
-      "args": [
-        "--mcp"
-      ],
+      "args": ["--mcp"],
       "env": {}
     },
     "rust-lsp": {
       "source": "custom",
       "command": "mcp-language-server",
-      "args": [
-        "--workspace",
-        "",
-        "--lsp",
-        "rust-lsp-executable"
-      ],
+      "args": ["--workspace", "", "--lsp", "rust-lsp-executable"],
       "env": {
         "LOG_LEVEL": "DEBUG"
       }
     },
     "char-index": {
       "command": "uvx",
-      "args": [
-        "char-index-mcp"
-      ]
+      "args": ["char-index-mcp"]
     }
+  },
+  "file_types": {
+    "Diff": ["dif"],
+    "C": ["C", "H"],
+    "Tide": ["*.tide", "*.td"],
+    "Sieve": ["sieve", "sv", "*.sieve", "*.sv"],
+    "Git Config": [
+      "$XDG_CONFIG_HOME/git/config",
+      "$XDG_CONFIG_HOME/git/configs/*"
+    ],
+    "SSH Config": [
+      "$XDG_CONFIG_HOME/ssh/config",
+      "$XDG_CONFIG_HOME/ssh/configs/*"
+    ],
+    "Shell Script": ["direnvrc", ".envrc"],
+    "JSON": [".releaserc"]
   },
   "tab_size": 4,
   "telemetry": {
@@ -121,12 +106,7 @@
     "dock": "bottom",
     "detect_venv": {
       "on": {
-        "directories": [
-          ".env",
-          "env",
-          ".venv",
-          "venv"
-        ],
+        "directories": [".env", "env", ".venv", "venv"],
         "activate_script": "default"
       }
     },

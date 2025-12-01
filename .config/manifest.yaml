@@ -35,7 +35,7 @@ cargo:
   cargo-instruments: https://www.libhunt.com/r/cargo-instruments
   cargo-about: https://www.libhunt.com/r/cargo-about
   cargo-auditable: https://www.libhunt.com/r/cargo-auditable
-  cargo-spellcheck: https://www.libhunt.com/r/cargo-spellcheck
+  cargo-spellcheck: https://github.com/drahnr/cargo-spellcheck
   cargo-public-api: https://www.libhunt.com/r/cargo-public-api
   cargo-swift: https://www.libhunt.com/r/cargo-swift
   cargo-depgraph: https://www.libhunt.com/r/cargo-depgraph
@@ -76,3 +76,17 @@ version:
   node: 18.17.1
 node:
   tdd-guard: ""
+  semantic-release: ""
+  semantic-release/commit-analyzer: ""
+  semantic-release/release-notes-generator: ""
+  semantic-release/changelog: ""
+  semantic-release/git: ""
+  semantic-release/exec: ""
+  semantic-release/github: ""
+  semantic-release-commits-lint: ""
+  semantic-release-replace-plugin: ""
+  semantic-release-license: ""
+  semantic-release-plus/docker: ""
+  semantic-release-slack-bot: ""
+  semantic-release-github-milestones: ""
+  saithodev/semantic-release-gitea: ""

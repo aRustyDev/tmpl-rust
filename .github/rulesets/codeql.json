@@ -1,0 +1,5 @@
+{
+  "language": "csharp",
+  "query_pack": "aGVsbG8=",
+  "repositories": ["octocat/Hello-World", "octocat/example"]
+}

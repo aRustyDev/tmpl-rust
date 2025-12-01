@@ -1,29 +1,209 @@
 {
+  "branches": ["main", "next", "beta", "alpha"],
   "plugins": [
-    "@semantic-release/commit-analyzer",
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "preset": "angular",
+        "releaseRules": [
+          {"type": "docs", "scope": "README", "release": "patch"},
+          {"type": "refactor", "release": "patch"},
+          {"type": "style", "release": "patch"}
+        ]
+      }
+    ],
     "semantic-release-commits-lint",
-    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/exec",
+      {
+        "verifyConditionsCmd": "cargo spellcheck --version && cargo --version",
+        "verifyReleaseCmd": "cargo spellcheck check"
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "angular",
+        "presetConfig": {
+          "types": [
+            {"type": "feat", "section": ":sparkles: Features"},
+            {"type": "fix", "section": ":bug: Bug Fixes"},
+            {"type": "perf", "section": ":zap: Performance"},
+            {"type": "revert", "section": ":rewind: Reverts"},
+            {"type": "docs", "section": ":memo: Documentation"},
+            {"type": "style", "section": ":art: Styles"},
+            {"type": "refactor", "section": ":recycle: Refactors"},
+            {"type": "test", "section": ":white_check_mark: Tests"},
+            {"type": "build", "section": ":construction_worker: Build"},
+            {"type": "ci", "section": ":green_heart: CI"}
+          ]
+        }
+      }
+    ],
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "CHANGELOG.md"
+      }
+    ],
+    [
+      "semantic-release-replace-plugin",
+      {
+        "replacements": [
+          {
+            "files": ["Cargo.toml"],
+            "from": "version = \".*\"",
+            "to": "version = \"${nextRelease.version}\"",
+            "results": [
+              {
+                "file": "Cargo.toml",
+                "hasChanged": true,
+                "numMatches": 1,
+                "numReplacements": 1
+              }
+            ],
+            "countMatches": true
+          },
+          {
+            "files": ["docker/workspace.Dockerfile"],
+            "from": "FROM rust:.*-slim",
+            "to": "FROM rust:${process.env.RUST_VERSION}-slim",
+            "results": [
+              {
+                "file": "docker/workspace.Dockerfile",
+                "hasChanged": true,
+                "numMatches": 1,
+                "numReplacements": 1
+              }
+            ],
+            "countMatches": true
+          },
+          {
+            "files": ["README.md"],
+            "from": "## Version .*",
+            "to": "## Version ${nextRelease.version}",
+            "results": [
+              {
+                "file": "README.md",
+                "hasChanged": true,
+                "numMatches": 1,
+                "numReplacements": 1
+              }
+            ],
+            "countMatches": true
+          }
+        ]
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "cargo build --release && cargo about generate about.hbs > THIRD_PARTY_LICENSES.html",
+        "publishCmd": "cargo publish --token ${process.env.CARGO_REGISTRY_TOKEN}"
+      }
+    ],
+    [
+      "@semantic-release-plus/docker",
+      {
+        "name": "${process.env.DOCKER_NAMESPACE}/${process.env.DOCKER_IMAGE_NAME}",
+        "registry": "docker.io",
+        "dockerRegistry": "docker.io",
+        "dockerProject": "${process.env.DOCKER_NAMESPACE}",
+        "dockerImage": "${process.env.DOCKER_IMAGE_NAME}",
+        "dockerFile": "docker/workspace.Dockerfile",
+        "dockerContext": ".",
+        "dockerTags": ["{{version}}", "{{major}}-latest", "{{major}}.{{minor}}", "latest"],
+        "dockerPublish": true,
+        "dockerArgs": {
+          "RUST_VERSION": "${process.env.RUST_VERSION}"
+        }
+      }
+    ],
+    [
+      "semantic-release-license",
+      {
+        "license": {
+          "path": "LICENSE"
+        }
+      }
+    ],
     [
       "@semantic-release/github",
       {
-        "assets": ["dist/**"]
+        "assets": [
+          {
+            "path": "target/release/${process.env.BINARY_NAME}",
+            "name": "${process.env.BINARY_NAME}-${nextRelease.gitTag}",
+            "label": "Binary (${nextRelease.gitTag})"
+          },
+          {
+            "path": "CHANGELOG.md",
+            "name": "CHANGELOG.md",
+            "label": "Changelog"
+          },
+          {
+            "path": "THIRD_PARTY_LICENSES.html",
+            "name": "THIRD_PARTY_LICENSES.html",
+            "label": "Third Party Licenses"
+          }
+        ],
+        "successComment": ":tada: This ${issue.pull_request ? 'PR is included' : 'issue has been resolved'} in version ${nextRelease.version} :tada:\n\nThe release is available on:\n- [GitHub Releases](${releases.find(r => r.name === 'GitHub release').url})\n- [crates.io](https://crates.io/crates/${process.env.CRATE_NAME}/${nextRelease.version})\n- [Docker Hub](https://hub.docker.com/r/${process.env.DOCKER_NAMESPACE}/${process.env.DOCKER_IMAGE_NAME}/tags)",
+        "releasedLabels": ["released<%= nextRelease.channel ? ` on @\${nextRelease.channel}` : \"\" %>"]
       }
     ],
-    "@semantic-release/git",
-    "@semantic-release/exec",
-    "semantic-release-docker",
-    "@semantic-release-plus/docker",
-    "semantic-release-kaniko",
-    "semantic-release-skopeo",
-    "semantic-release-gcr",
-    "semantic-release-github-pullrequest",
-    "semantic-release-pull-request-analyzer",
-    "@saithodev/semantic-release-gitea",
-    "semantic-release-replace-plugin",
-    "semantic-release-license",
-    "semantic-release-cargo",
-    "semantic-release-github-milestones",
-    "sr-uv-plugin"
-  ],
-  "preset": "angular"
+    [
+      "@saithodev/semantic-release-gitea",
+      {
+        "giteaUrl": "${process.env.GITEA_URL}",
+        "assets": [
+          {
+            "path": "target/release/${process.env.BINARY_NAME}",
+            "name": "${process.env.BINARY_NAME}-${nextRelease.gitTag}",
+            "label": "Binary"
+          }
+        ]
+      }
+    ],
+    [
+      "semantic-release-github-milestones",
+      {
+        "milestoneTitle": "v${nextRelease.version}"
+      }
+    ],
+    [
+      "semantic-release-slack-bot",
+      {
+        "notifyOnSuccess": true,
+        "notifyOnFail": true,
+        "slackWebhook": "${process.env.SLACK_WEBHOOK}",
+        "branchesConfig": [
+          {
+            "pattern": "main",
+            "notifyOnSuccess": true,
+            "notifyOnFail": true
+          },
+          {
+            "pattern": "next",
+            "notifyOnSuccess": true,
+            "notifyOnFail": true
+          }
+        ]
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": [
+          "CHANGELOG.md",
+          "Cargo.toml",
+          "Cargo.lock",
+          "docker/workspace.Dockerfile",
+          "README.md",
+          "LICENSE",
+          "THIRD_PARTY_LICENSES.html"
+        ],
+        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
+    ]
+  ]
 }
