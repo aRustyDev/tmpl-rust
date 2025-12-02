@@ -1,6 +1,7 @@
 set shell := ["/opt/homebrew/bin/bash", "-euo", "pipefail", "-c"]
-import ".scripts/github.just"
-import ".scripts/opw.just"
+
+import './.scripts/github.just'
+import './.scripts/opw.just'
 
 export RUST_VERSION := "1.83"
 export PYTHON_VERSION := "3.12"
